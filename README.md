@@ -9,7 +9,7 @@ The goal is to reinforce concepts through practice, code implementation, and per
 ---
 # Structure
 
-'''
+``` 
 project/
 │
 ├── README.md
@@ -17,6 +17,4 @@ project/
 ├── exercises/     # Solutions to course exercises and problem sets
 ├── experiments/   # Independent tests and exploratory code
 ├── src/           # Optional reusable utilities
-
-'''
-
+```
