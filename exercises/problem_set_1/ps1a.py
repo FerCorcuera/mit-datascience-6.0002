@@ -34,7 +34,7 @@ def load_cows(filename):
 
     for value in clean_data:
         cow_info = value.split(",")
-        cows[cow_info[0]] = cow_info[1]
+        cows[cow_info[0]] = int(cow_info[1])
 
     return cows
 
@@ -63,21 +63,36 @@ def greedy_cow_transport(cows, limit=10):
     trips
     """
 
-    iterable_cows = cows.copy()
+    if max(cows.values()) > limit:
+        raise ValueError("One cow is heavier than the limit, remove it please!")
 
-    original_limit = limit
+    iterable_cows = cows.copy()
 
     trips = []
 
-    while min(iterable_cows, key=iterable_cows.get) < limit:
+    while iterable_cows:
         n_trip = []
 
-        heaviest_cow = max(iterable_cows, key=iterable_cows.get)
+        remaining_cows = sorted(iterable_cows, key=iterable_cows.get, reverse=True)
 
-        if limit - iterable_cows[heaviest_cow] >= 0:
-            n_trip.append(heaviest_cow)
+        new_limit = limit
 
-            limit -= iterable_cows[heaviest_cow]
+        for cow in remaining_cows:
+            if new_limit - cows[cow] >= 0:
+                n_trip.append(cow)
+                new_limit -= cows[cow]
+
+                iterable_cows.pop(cow)
+
+        if n_trip != []:
+            trips.append(n_trip)
+
+    return trips
+
+
+print(greedy_cow_transport(load_cows("ps1_cow_data.txt")))
+print(greedy_cow_transport({"Jesse": 6, "Maybel": 3, "Callie": 2, "Maggie": 5}))
+# print(greedy_cow_transport({'Jesse': 6, 'Maybel':3, 'Callie': 2, 'Maggie': 5}, limit = 5))
 
 
 # Problem 3
