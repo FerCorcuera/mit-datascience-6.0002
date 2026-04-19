@@ -90,11 +90,6 @@ def greedy_cow_transport(cows, limit=10):
     return trips
 
 
-# print(greedy_cow_transport(load_cows("ps1_cow_data.txt")))
-# print(greedy_cow_transport({"Jesse": 6, "Maybel": 3, "Callie": 2, "Maggie": 5}))
-# print(greedy_cow_transport({'Jesse': 6, 'Maybel':3, 'Callie': 2, 'Maggie': 5}, limit = 5))
-
-
 # Problem 3
 def brute_force_cow_transport(cows, limit=10):
     """
@@ -140,11 +135,6 @@ def brute_force_cow_transport(cows, limit=10):
     return total_travels[min_travel_index[0]]
 
 
-print(brute_force_cow_transport({"Jesse": 6, "Maybel": 3, "Callie": 2, "Maggie": 5}))
-
-print(brute_force_cow_transport(load_cows("ps1_cow_data.txt")))
-
-
 # Pr blem 4
 def compare_cow_transport_algorithms():
     """
@@ -159,5 +149,30 @@ def compare_cow_transport_algorithms():
     Returns:
     Does not return anything.
     """
-    # TODO: Your code here
-    pass
+    cow_data = load_cows("ps1_cow_data.txt")
+
+    greedy_start_time = time.time()
+    greedy_result = greedy_cow_transport(cow_data)
+    greedy_end_time = time.time()
+
+    brute_strat_time = time.time()
+    brute_result = brute_force_cow_transport(cow_data)
+    brute_end_time = time.time()
+
+    print("==============================")
+    print(
+        f"Greedy algorithm took {greedy_end_time - greedy_start_time}",
+        "\n With this result:",
+        greedy_result,
+        f"with {len(greedy_result)} trips",
+    )
+    print("==============================")
+    print(
+        f"Brute force algorithm took {brute_end_time - brute_strat_time}",
+        "\n With this resutl:",
+        brute_result,
+        f"with {len(brute_result)} trips",
+    )
+
+
+compare_cow_transport_algorithms()
