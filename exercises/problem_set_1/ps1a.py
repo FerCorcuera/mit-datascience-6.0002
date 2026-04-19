@@ -90,8 +90,8 @@ def greedy_cow_transport(cows, limit=10):
     return trips
 
 
-print(greedy_cow_transport(load_cows("ps1_cow_data.txt")))
-print(greedy_cow_transport({"Jesse": 6, "Maybel": 3, "Callie": 2, "Maggie": 5}))
+# print(greedy_cow_transport(load_cows("ps1_cow_data.txt")))
+# print(greedy_cow_transport({"Jesse": 6, "Maybel": 3, "Callie": 2, "Maggie": 5}))
 # print(greedy_cow_transport({'Jesse': 6, 'Maybel':3, 'Callie': 2, 'Maggie': 5}, limit = 5))
 
 
@@ -117,11 +117,35 @@ def brute_force_cow_transport(cows, limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
-    pass
+    names_of_cows = list(cows.keys())
+    total_travels = list(get_partitions(names_of_cows))
+    valid_travels = []
+
+    for i, travel in enumerate(total_travels):
+        total_trips = len(travel)
+
+        excedeed_limit = False
+
+        for trip in travel:
+            weight_trip = sum(cows[cow] for cow in trip)
+            if weight_trip > limit:
+                excedeed_limit = True
+                break
+
+        if not excedeed_limit:
+            valid_travels.append((i, total_trips))
+
+    min_travel_index = min(valid_travels, key=lambda x: x[1])
+
+    return total_travels[min_travel_index[0]]
 
 
-# Problem 4
+print(brute_force_cow_transport({"Jesse": 6, "Maybel": 3, "Callie": 2, "Maggie": 5}))
+
+print(brute_force_cow_transport(load_cows("ps1_cow_data.txt")))
+
+
+# Pr blem 4
 def compare_cow_transport_algorithms():
     """
     Using the data from ps1_cow_data.txt and the specified weight limit, run your
