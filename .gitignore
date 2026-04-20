@@ -33,3 +33,5 @@ Thumbs.db
 # virtual environments
 
 .venv/
+# vscode
+.vscode/
