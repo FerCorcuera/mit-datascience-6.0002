@@ -1,4 +1,4 @@
-# Python Cache
+G Python Cache
 
 __pycache__/
 *.pyc
@@ -30,3 +30,6 @@ Thumbs.db
 
 # *.csv
 
+# virtual environments
+
+.venv/
