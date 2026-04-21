@@ -1,0 +1,15 @@
+# Problem set 1A - Answers:
+  
+1. The greedy algorithm output was a travel of 6 trips and it took nearly 0.00003 seconds, while the brute force algorithm output had 5 trips and took 0.74 seconds. The greedy algorithm was extremely faster than the brute force one because it only made local choices without exploring alternatives, while the brute force algorithm calculated all the possible solutions, like 2 power n, and chose the best one. 
+
+2. No the greedy algorithm does not return the optimal solution. That is because it only optimized locally, each iteration was optimizing the immediate problem, without reconsidering past decisions. While sometimes this approach can lead us to a global optimal solution, this is not the case since we chose a specific way to sort the decisions (weight of the cow), and depending of that way of sorting, we'll have a total different answer.
+
+3. Yes, the brute force algorithm returned the optimal solution, it is worth to say that there are different optimal solutions for this problem, given that the minimum number of trips for the used data was 5, but there are different ways to have those 5 trips. That was the optimal solution because we explored all possible combinations of cows, we filtered the combinations that violated the weight constraint, and we calculated which of the remaining ones has the minimum number of trips. Therefore, it guarantees an optimal solution because it evaluates all valid solutions and selects the best. 
+
+# Problem set 1B - Answers:
+
+1. It would be difficult to implement a brute force algorithm because it needs to list all the possible combinations given the list of egg weights, and that number increases in an exponenial number of possibilities as we add new egg weights (or if we change the target weight), therefore the number of possible combinations could reach enormous numbers rapidlym, making brute force inpractical.
+
+2. If I were to implement a greedy algorithm for this problem, first the objective function would be to minimize the number of eggs taken, while the contraints would be that the sum of weights must equal to the target weight. Given that we want to minimize the number of eggs, my strategy for this algorithm would be to prioritize the heaviest eggs in each iteration, we prioritize selecting the largest weight available in each step. 
+
+3. No necessarily, an example of when it will not return the optimal solution is when the target is 6 and we have [1,3,4] weights, a greedy algorithm that prioritizes the heaviest egg in each iteration will end with [4,1,1], while the optimal solution is just [3,3], that happens because in order to solve this problem local solutions are not efficient in all cases. When we choose a egg we are limiting the next decisions! In our example we chose 4, and it was not an optimal decision! because we can find a better combination of eggs if the remaining is 3. To summarize, a greedy algorithm will not return the optimal solution always.
