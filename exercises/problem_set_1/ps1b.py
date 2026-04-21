@@ -23,8 +23,38 @@ def dp_make_weight(egg_weights, target_weight, memo={}):
 
     Returns: int, smallest number of eggs needed to make target weight
     """
-    # TODO: Your code here
-    pass
+
+    sorted_egg_weights = sorted(egg_weights, reverse=True)
+
+    current_weight = 0
+
+    remain = target_weight
+
+    number_of_eggs = 0
+
+    current_egg = 0
+
+    combination = []
+
+    while current_weight < target_weight:
+        if remain - sorted_egg_weights[current_egg] >= 0:
+            number_of_eggs += 1
+
+            current_weight += sorted_egg_weights[current_egg]
+
+            remain -= sorted_egg_weights[current_egg]
+
+            combination.append(sorted_egg_weights[current_egg])
+            print(current_weight)
+
+            print(remain)
+        else:
+            print("=======================")
+            print(current_egg)
+            current_egg += 1
+
+    print(combination)
+    return number_of_eggs
 
 
 # EXAMPLE TESTING CODE, feel free to add more if you'd like

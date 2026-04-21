@@ -1,8 +1,8 @@
 ###########################
 # 6.0002 Problem Set 1a: Space Cows
-# Name:
-# Collaborators:
-# Time:
+# Name: Fernando Corcuera
+# Collaborators: Fernando Corcuera and dieguito
+# Time: 2 hours
 
 from ps1_partition import get_partitions
 import time
@@ -175,4 +175,5 @@ def compare_cow_transport_algorithms():
     )
 
 
-compare_cow_transport_algorithms()
+if __name__ == "__main__":
+    compare_cow_transport_algorithms()

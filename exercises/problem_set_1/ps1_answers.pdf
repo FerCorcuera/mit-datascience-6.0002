@@ -1,0 +1,7 @@
+# Problem set 1A - Answers:
+  
+1. The greedy algorithm output was a travel of 6 trips and it took nearly 0.00003 seconds, while the brute force algorithm output had 5 trips and took 0.74 seconds. The greedy algorithm was extremely faster than the brute force one because it only made local choices without exploring alternatives, while the brute force algorithm calculated all the possible solutions, like 2 power n, and chose the best one. 
+
+2. No the greedy algorithm does not return the optimal solution. That is because it only optimized locally, each iteration was optimizing the immediate problem, without reconsidering past decisions. While sometimes this approach can lead us to a global optimal solution, this is not the case since we chose a specific way to sort the decisions (weight of the cow), and depending of that way of sorting, we'll have a total different answer.
+
+3. Yes, the brute force algorithm returned the optimal solution, it is worth to say that there are different optimal solutions for this problem, given that the minimum number of trips for the used data was 5, but there are different ways to have those 5 trips. That was the optimal solution because we explored all possible combinations of cows, we filtered the combinations that violated the weight constraint, and we calculated which of the remaining ones has the minimum number of trips. Therefore, it guarantees an optimal solution because it evaluates all valid solutions and selects the best. 
