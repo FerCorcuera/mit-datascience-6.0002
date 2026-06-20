@@ -1,7 +1,7 @@
-# 6.0002 Problem Set 5
+# 6.0002 Problem Set 2
 # Graph optimization
-# Name:
-# Collaborators:
+# Name: Fernando Corcuera
+# Collaborators: Fernando Corcuera and Diego the cat
 # Time:
 
 #
@@ -20,7 +20,9 @@ from graph import Digraph, Node, WeightedEdge
 # represented?
 #
 # Answer:
-#
+# The nodes represent the MIT buildings , the graph's edges represent the connnections between the
+# buildings, and the distances (total or outdoor distances) represent the weights to travel
+# from one building to another, and are represented in the weighted edge class properties.
 
 
 # Problem 2b: Implementing load_map
@@ -42,9 +44,38 @@ def load_map(map_filename):
     Returns:
         a Digraph representing the map
     """
-
-    # TODO
     print("Loading map from file...")
+
+    with open(map_filename, "r", encoding="utf-8") as f:
+        read_data = f.read()
+
+    data = read_data.split("\n")
+    nodes = set()
+    mit_digraph = Digraph()
+
+    for n in data:
+        if len(n) != 0:
+            info = n.split(" ")
+            nodes.add(Node(info[0]))
+            nodes.add(Node(info[1]))
+
+    for node in nodes:
+        mit_digraph.add_node(node)
+
+    for values in data:
+        if len(values) != 0:
+            w_edge = values.split(" ")
+            src = Node(w_edge[0])
+            dst = Node(w_edge[1])
+            total_distance = int(w_edge[2])
+            outdoor_distance = int(w_edge[3])
+
+            mit_digraph.add_edge(
+                WeightedEdge(src, dst, total_distance, outdoor_distance)
+            )
+
+    print("Map loaded successfully")
+    return mit_digraph
 
 
 # Problem 2c: Testing load_map
