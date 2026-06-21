@@ -81,15 +81,20 @@ def load_map(map_filename):
 # Problem 2c: Testing load_map
 # Include the lines used to test load_map below, but comment them out
 
+# test_map = load_map('test_load_map.txt')
+# print(test_map)
 
-#
+
 # Problem 3: Finding the Shorest Path using Optimized Search Method
 #
 # Problem 3a: Objective function
 #
 # What is the objective function for this problem? What are the constraints?
 #
-# Answer:
+# Answer: Given all possible paths between two points, the objective function
+# would be to minimize the total distance traversed between those points,
+# and the constraint would be that the total outdoor_distance should not exceed the
+# defined maximum distance outdoors
 #
 
 
@@ -127,8 +132,36 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist, best_
         If there exists no path that satisfies max_total_dist and
         max_dist_outdoors constraints, then return None.
     """
-    # TODO
-    pass
+
+    current_path = [path[0] + [start], path[1], path[2]]
+
+    if not (digraph.has_node(Node(start)) and digraph.has_node(Node(end))):
+        raise ValueError("One or both nodes do not exist in the Digraph")
+
+    elif start == end:
+        return (current_path[0], current_path[1])
+
+    else:
+        for w_e in digraph.get_edges_for_node(Node(start)):
+            if w_e.get_destination().get_name() not in current_path[0]:
+                new_outdoor_d = current_path[2] + w_e.get_outdoor_distance()
+                new_total_d = current_path[1] + w_e.get_total_distance()
+
+                if new_outdoor_d <= max_dist_outdoors and (new_total_d <= best_dist):
+                    newPath = get_best_path(
+                        digraph,
+                        w_e.get_destination().get_name(),
+                        end,
+                        [current_path[0], new_total_d, new_outdoor_d],
+                        max_dist_outdoors,
+                        best_dist,
+                        best_path,
+                    )
+
+                    if newPath != None:
+                        best_path, best_dist = newPath
+
+    return (best_path, best_dist)
 
 
 # Problem 3c: Implement directed_dfs
@@ -160,8 +193,23 @@ def directed_dfs(digraph, start, end, max_total_dist, max_dist_outdoors):
         If there exists no path that satisfies max_total_dist and
         max_dist_outdoors constraints, then raises a ValueError.
     """
-    # TODO
-    pass
+
+    result = get_best_path(
+        digraph=digraph,
+        start=start,
+        end=end,
+        path=[[], 0, 0],
+        max_dist_outdoors=max_dist_outdoors,
+        best_dist=max_total_dist,
+        best_path=None,
+    )
+
+    if result[0] is None:
+        raise ValueError("No path was found that meets the constraints")
+
+    else:
+        print(result)
+        return result[0]
 
 
 # ================================================================

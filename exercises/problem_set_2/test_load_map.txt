@@ -1,0 +1,5 @@
+building_a building_b 15 10
+building_a building_c 100 1
+building_b building_x 5 15
+building_x building_d 16 6
+building_c building_d 100 1
