@@ -165,14 +165,14 @@ class RectangularRoom(object):
 
     def get_dirt_amount(self, m, n):
         """
-        Return the amount of dirt on the tile (m, n)
+         Return the amount of dirt on the tile (m, n)
 
         Assumes that (m, n) represents a valid tile inside the room.
 
-        m: an integer
-        n: an integer
+         m: an integer
+         n: an integer
 
-        Returns: an integer
+         Returns: an integer
         """
         tile = (math.floor(m), math.floor(n))
 
@@ -415,12 +415,22 @@ class StandardRobot(Robot):
         rotate once to a random new direction, and stay stationary) and clean the dirt on the tile
         by its given capacity.
         """
-        raise NotImplementedError
+        new_pos = self.position.get_new_position(self.direction, self.speed)
+
+        if self.room.is_position_valid(new_pos):
+            self.room.clean_tile_at_position(new_pos, self.capacity)
+
+            self.set_robot_position(new_pos)
+
+        else:
+            new_direction = random.random() * 360
+
+            self.set_robot_direction(new_direction)
 
 
 # Uncomment this line to see your implementation of StandardRobot in action!
-# test_robot_movement(StandardRobot, EmptyRoom)
-# test_robot_movement(StandardRobot, FurnishedRoom)
+test_robot_movement(StandardRobot, EmptyRoom)
+test_robot_movement(StandardRobot, FurnishedRoom)
 
 
 # === Problem 4
