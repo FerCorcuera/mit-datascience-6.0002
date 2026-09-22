@@ -429,8 +429,8 @@ class StandardRobot(Robot):
 
 
 # Uncomment this line to see your implementation of StandardRobot in action!
-test_robot_movement(StandardRobot, EmptyRoom)
-test_robot_movement(StandardRobot, FurnishedRoom)
+# test_robot_movement(StandardRobot, EmptyRoom)
+# test_robot_movement(StandardRobot, FurnishedRoom)
 
 
 # === Problem 4
@@ -472,13 +472,38 @@ class FaultyRobot(Robot):
         StandardRobot at this time-step (checking if it can move to a new position,
         move there if it can, pick a new direction and stay stationary if it can't)
         """
-        raise NotImplementedError
+
+        if self.gets_faulty():
+            new_direction = random.random() * 360
+
+            self.set_robot_direction(new_direction)
+
+        else:
+            new_pos = self.position.get_new_position(self.direction, self.speed)
+
+            if self.room.is_position_valid(new_pos):
+                self.room.clean_tile_at_position(new_pos, self.capacity)
+
+                self.set_robot_position(new_pos)
+
+            else:
+                new_direction = random.random() * 360
+                self.set_robot_direction(new_direction)
 
 
 # test_robot_movement(FaultyRobot, EmptyRoom)
 
 
 # === Problem 5
+
+
+def safe_division(numerator, denominator):
+    if denominator == 0:
+        return 0
+    else:
+        return numerator / denominator
+
+
 def run_simulation(
     num_robots,
     speed,
@@ -489,7 +514,7 @@ def run_simulation(
     min_coverage,
     num_trials,
     robot_type,
-):
+) -> int:
     """
     Runs num_trials trials of the simulation and returns the mean number of
     time-steps needed to clean the fraction min_coverage of the room.
@@ -509,14 +534,55 @@ def run_simulation(
     robot_type: class of robot to be instantiated (e.g. StandardRobot or
                 FaultyRobot)
     """
-    raise NotImplementedError
+
+    time_steps = []
+
+    for i in range(num_trials):
+        room = EmptyRoom(width, height, dirt_amount)
+
+        robots = [robot_type(room, speed, capacity) for r in range(num_robots)]
+
+        actual_coverage = safe_division(
+            room.get_num_cleaned_tiles(), room.get_num_tiles()
+        )
+
+        steps = 0
+
+        while actual_coverage < min_coverage:
+            for rb in robots:
+                rb.update_position_and_clean()
+
+            actual_coverage = safe_division(
+                room.get_num_cleaned_tiles(), room.get_num_tiles()
+            )
+            steps += 1
+
+        time_steps.append(steps)
+
+    time_steps_avg = sum(time_steps) / len(time_steps)
+
+    return time_steps_avg
 
 
-# print ('avg time steps: ' + str(run_simulation(1, 1.0, 1, 5, 5, 3, 1.0, 50, StandardRobot)))
-# print ('avg time steps: ' + str(run_simulation(1, 1.0, 1, 10, 10, 3, 0.8, 50, StandardRobot)))
-# print ('avg time steps: ' + str(run_simulation(1, 1.0, 1, 10, 10, 3, 0.9, 50, StandardRobot)))
-# print ('avg time steps: ' + str(run_simulation(1, 1.0, 1, 20, 20, 3, 0.5, 50, StandardRobot)))
-# print ('avg time steps: ' + str(run_simulation(3, 1.0, 1, 20, 20, 3, 0.5, 50, StandardRobot)))
+print(
+    "avg time steps: " + str(run_simulation(1, 1.0, 1, 5, 5, 3, 1.0, 50, StandardRobot))
+)
+print(
+    "avg time steps: "
+    + str(run_simulation(1, 1.0, 1, 10, 10, 3, 0.8, 50, StandardRobot))
+)
+print(
+    "avg time steps: "
+    + str(run_simulation(1, 1.0, 1, 10, 10, 3, 0.9, 50, StandardRobot))
+)
+print(
+    "avg time steps: "
+    + str(run_simulation(1, 1.0, 1, 20, 20, 3, 0.5, 50, StandardRobot))
+)
+print(
+    "avg time steps: "
+    + str(run_simulation(3, 1.0, 1, 20, 20, 3, 0.5, 50, StandardRobot))
+)
 
 # === Problem 6
 #
@@ -525,10 +591,22 @@ def run_simulation(
 # 1)How does the performance of the two robot types compare when cleaning 80%
 #       of a 20x20 room?
 #
+#   - The performance for both types of robot follows the same behaviour,
+#     as we increase the number of robots the average time steps decrease expontentially,
+#     duplicating the number of robots from 2 to 4, the average number of time steps decreases from
+#     2225 to 750 aprox. The difference in average time steps between the two types of robots is around
+#     300 with a small amount of robots, but it decreases to nearly 35 as the number increases
+#
 #
 # 2) How does the performance of the two robot types compare when two of each
 #       robot cleans 80% of rooms with dimensions
 #       10x30, 20x15, 25x12, and 50x6?
+#
+#   - While both types of robot takes more time steps on average as the width
+#     of the room increases, the FaultyRobot's average worsens more rapidly, reaching
+#     1200 average time steps with the max width. On the other hand, the standard robot's
+#     average worsens but in a slower pace, reaching only around 850 average time steps
+#     (considering that it starts at 800)
 #
 #
 
@@ -588,4 +666,8 @@ def show_plot_room_shape(title, x_label, y_label):
 
 
 # show_plot_compare_strategies('Time to clean 80% of a 20x20 room, for various numbers of robots','Number of robots','Time / steps')
-# show_plot_room_shape('Time to clean 80% of a 300-tile room for various room shapes','Aspect Ratio', 'Time / steps')
+show_plot_room_shape(
+    "Time to clean 80% of a 300-tile room for various room shapes",
+    "Aspect Ratio",
+    "Time / steps",
+)
