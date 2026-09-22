@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Problem Set 3: Simulating robots
-# Name:
-# Collaborators (discussion):
-# Time:
+# Name: Fernando Corcuera
+# Collaborators (discussion): Diego the cat
+# Time: 4 hours
 
 import math
 import random
