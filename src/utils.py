@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+
+
 class Food:
     """
     With this class we will be able to create each food and access to
@@ -89,3 +92,13 @@ def testGreedys(maxUnits, foods):
     print("\nUse greedy by density to allocate", maxUnits, "calories")
 
     testGreedy(foods, maxUnits, Food.density)
+
+
+def makeHist(data, title, xlabel, ylabel, bins=20, ax=None):
+    if ax is None:
+        fig, ax = plt.subplots()
+
+    ax.hist(data, bins=bins, color="#034794", alpha=0.4)
+    ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
