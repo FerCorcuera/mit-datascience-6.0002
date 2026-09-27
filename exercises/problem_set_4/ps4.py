@@ -75,7 +75,7 @@ def make_two_curve_plot(
 ##########################
 
 
-class SimpleBacteria(object):
+class SimpleBacteria:
     """A simple bacteria cell with no antibiotic resistance"""
 
     def __init__(self, birth_prob, death_prob):
@@ -85,7 +85,8 @@ class SimpleBacteria(object):
                 probability
             death_prob (float in [0, 1]): Maximum death probability
         """
-        pass  # TODO
+        self.birth_prob = birth_prob
+        self.death_prob = death_prob
 
     def is_killed(self):
         """
@@ -96,7 +97,11 @@ class SimpleBacteria(object):
         Returns:
             bool: True with probability self.death_prob, False otherwise.
         """
-        pass  # TODO
+
+        prob = random.random()
+        result = prob < self.death_prob
+
+        return result
 
     def reproduce(self, pop_density):
         """
@@ -124,7 +129,13 @@ class SimpleBacteria(object):
         Raises:
             NoChildException if this bacteria cell does not reproduce.
         """
-        pass  # TODO
+        b_prob = random.random()
+
+        if b_prob < self.birth_prob * (1 - pop_density):
+            return SimpleBacteria(self.birth_prob, self.death_prob)
+
+        else:
+            raise NoChildException("The bacteria has not reproduced")
 
 
 class Patient(object):
@@ -140,7 +151,8 @@ class Patient(object):
             max_pop (int): Maximum possible bacteria population size for
                 this patient
         """
-        pass  # TODO
+        self.bacteria = bacteria
+        self.max_pop = max_pop
 
     def get_total_pop(self):
         """
@@ -149,7 +161,7 @@ class Patient(object):
         Returns:
             int: The total bacteria population
         """
-        pass  # TODO
+        return len(self.bacteria)
 
     def update(self):
         """
@@ -175,10 +187,29 @@ class Patient(object):
         Returns:
             int: The total bacteria population at the end of the update
         """
-        pass  # TODO
+        live_bacteria = []
+        for i in range(len(self.bacteria)):
+            if not self.bacteria[i].is_killed():
+                live_bacteria.append(self.bacteria[i])
+
+        pop_density = len(live_bacteria) / self.max_pop
+
+        new_bacteria = []
+
+        for l_bac in live_bacteria:
+            try:
+                result = l_bac.reroduce(pop_density)
+
+                new_bacteria.append(result)
+
+            except NoChildException:
+                continue
+
+        self.bacteria = live_bacteria + new_bacteria
+
+        return len(self.bacteria)
 
 
-##########################
 # PROBLEM 2
 ##########################
 

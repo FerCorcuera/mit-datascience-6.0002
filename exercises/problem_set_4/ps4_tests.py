@@ -3063,6 +3063,5 @@ class ps4_calc(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ps4_calc))
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(ps4_calc)
     unittest.TextTestRunner(verbosity=3).run(suite)
