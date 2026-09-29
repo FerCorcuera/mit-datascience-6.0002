@@ -1,12 +1,16 @@
 # Problem Set 4: Simulating the Spread of Disease and Bacteria Population Dynamics
-# Name:
-# Collaborators (Discussion):
+# Name: Fernando Corcuera
+# Collaborators (Discussion): Diego the cat
 # Time:
 
 import math
 import numpy as np
-import pylab as pl
+
+# import pylab as pl
+import matplotlib.pyplot as plt
 import random
+
+random.seed(0)
 
 
 ##########################
@@ -35,12 +39,11 @@ def make_one_curve_plot(x_coords, y_coords, x_label, y_label, title):
         y_label (str): label for the y-axis
         title (str): title for the graph
     """
-    pl.figure()
-    pl.plot(x_coords, y_coords)
-    pl.xlabel(x_label)
-    pl.ylabel(y_label)
-    pl.title(title)
-    pl.show()
+    plt.plot(x_coords, y_coords)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.title(title)
+    plt.show()
 
 
 def make_two_curve_plot(
@@ -60,14 +63,13 @@ def make_two_curve_plot(
         y_label (str): label for the y-axis
         title (str): the title of the graph
     """
-    pl.figure()
-    pl.plot(x_coords, y_coords1, label=y_name1)
-    pl.plot(x_coords, y_coords2, label=y_name2)
-    pl.legend()
-    pl.xlabel(x_label)
-    pl.ylabel(y_label)
-    pl.title(title)
-    pl.show()
+    plt.plot(x_coords, y_coords1, label=y_name1)
+    plt.plot(x_coords, y_coords2, label=y_name2)
+    plt.legend()
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.title(title)
+    plt.show()
 
 
 ##########################
@@ -198,7 +200,7 @@ class Patient(object):
 
         for l_bac in live_bacteria:
             try:
-                result = l_bac.reroduce(pop_density)
+                result = l_bac.reproduce(pop_density)
 
                 new_bacteria.append(result)
 
@@ -225,7 +227,15 @@ def calc_pop_avg(populations, n):
     Returns:
         float: The average bacteria population size at time step n
     """
-    pass  # TODO
+
+    bacs = []
+    for pop in populations:
+        n_bac = pop[n]
+        bacs.append(n_bac)
+
+    avg = sum(bacs) / len(bacs)
+
+    return avg
 
 
 def simulation_without_antibiotic(
@@ -258,12 +268,41 @@ def simulation_without_antibiotic(
     Returns:
         populations (list of lists or 2D array): populations[i][j] is the
             number of bacteria in trial i at time step j
+
     """
-    pass  # TODO
+    populations = []
+    for t in range(num_trials):
+        bacteria = [SimpleBacteria(birth_prob, death_prob) for b in range(num_bacteria)]
+
+        patient = Patient(bacteria, max_pop)
+
+        pops = [patient.get_total_pop()]
+
+        for i in range(300 - 1):
+            patient.update()
+
+            total_pop = patient.get_total_pop()
+
+            pops.append(total_pop)
+
+        populations.append(pops)
+
+    averages = []
+    for n in range(300):
+        averages.append(calc_pop_avg(populations, n))
+
+    make_one_curve_plot(
+        list(range(300)),
+        averages,
+        "TimeStep",
+        "Average Population",
+        "Without Antibiotic",
+    )
+    return populations
 
 
 # When you are ready to run the simulation, uncomment the next line
-# populations = simulation_without_antibiotic(100, 1000, 0.1, 0.025, 50)
+populations = simulation_without_antibiotic(100, 1000, 0.1, 0.025, 50)
 
 ##########################
 # PROBLEM 3
@@ -505,22 +544,22 @@ def simulation_with_antibiotic(
 
 # When you are ready to run the simulations, uncomment the next lines one
 # at a time
-total_pop, resistant_pop = simulation_with_antibiotic(
-    num_bacteria=100,
-    max_pop=1000,
-    birth_prob=0.3,
-    death_prob=0.2,
-    resistant=False,
-    mut_prob=0.8,
-    num_trials=50,
-)
-
-total_pop, resistant_pop = simulation_with_antibiotic(
-    num_bacteria=100,
-    max_pop=1000,
-    birth_prob=0.17,
-    death_prob=0.2,
-    resistant=False,
-    mut_prob=0.8,
-    num_trials=50,
-)
+# total_pop, resistant_pop = simulation_with_antibiotic(
+#     num_bacteria=100,
+#     max_pop=1000,
+#     birth_prob=0.3,
+#     death_prob=0.2,
+#     resistant=False,
+#     mut_prob=0.8,
+#     num_trials=50,
+# )
+#
+# total_pop, resistant_pop = simulation_with_antibiotic(
+#     num_bacteria=100,
+#     max_pop=1000,
+#     birth_prob=0.17,
+#     death_prob=0.2,
+#     resistant=False,
+#     mut_prob=0.8,
+#     num_trials=50,
+# )
