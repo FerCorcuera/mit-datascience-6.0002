@@ -632,7 +632,7 @@ def simulation_with_antibiotic(
         res_pops = [patient.get_resist_pop()]
 
         for i in range(150 - 1):
-            print("Update number:", i)
+            # print("Update number:", i)
             patient.update()
 
             pops.append(patient.get_total_pop())
@@ -641,7 +641,7 @@ def simulation_with_antibiotic(
         patient.set_on_antibiotic()
 
         for i in range(250):
-            print("Update number:", i)
+            # print("Update number:", i)
             patient.update()
 
             pops.append(patient.get_total_pop())
@@ -672,23 +672,52 @@ def simulation_with_antibiotic(
 
 # When you are ready to run the simulations, uncomment the next lines one
 # at a time
+# total_pop, resistant_pop = simulation_with_antibiotic(
+#     num_bacteria=100,
+#     max_pop=1000,
+#     birth_prob=0.3,
+#     death_prob=0.2,
+#     resistant=False,
+#     mut_prob=0.8,
+#     num_trials=50,
+# )
+#
+# total_std = calc_95_ci(total_pop, 298)
+# pop_std = calc_95_ci(resistant_pop,298)
+#
+#
+# print(total_std)
+# print(pop_std)
+#
+# print(total_std[0] + total_std[1], total_std[0] - total_std[1])
+# print(pop_std[0] + pop_std[1], pop_std[0] - pop_std[1])
+#
+
+
 total_pop, resistant_pop = simulation_with_antibiotic(
     num_bacteria=100,
     max_pop=1000,
-    birth_prob=0.3,
+    birth_prob=0.17,
     death_prob=0.2,
     resistant=False,
     mut_prob=0.8,
     num_trials=50,
 )
 
-
-# total_pop, resistant_pop = simulation_with_antibiotic(
-#     num_bacteria=100,
-#     max_pop=1000,
-#     birth_prob=0.17,
-#     death_prob=0.2,
-#     resistant=False,
-#     mut_prob=0.8,
-#     num_trials=50,
-# )
+# Final answers:
+#
+# 1. Before introducing the antibiotic the total population increases exponentially,
+# reaching 900 average bacteria for the first simulation. While for the second simulation,
+# The increase only happens at the first timesteps, and then decreases, even without
+# Applying the medicine.
+#
+# 2. IN both sumulations, the resistnat bacteria population has two phases,
+# A fast increases at the beggining, reaching its highest pont around 25 step. And then
+# A decrease, that is sharply in the firs simulation
+#
+# 3. After applying the antibiotic, in both cases the total bacteria population
+# drops to the resistnat bacteria population in just one timestep.
+#
+# 4. While for the resistnat bacteria, in the first simulation starts increases steadly.
+# And for the second simulation it reaches zero population at the final timesteps but
+# after a decreasing phase.
